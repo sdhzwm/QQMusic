@@ -156,8 +156,8 @@
 		97A42C3F1B8F54EB0003700B /* QQMusic */ = {
 			isa = PBXGroup;
 			children = (
-				97A42CA81B8F57100003700B /* Classes */,
 				97A42C521B8F57010003700B /* Resources */,
+				97A42CA81B8F57100003700B /* Classes */,
 				97A42C471B8F54EB0003700B /* Assets.xcassets */,
 				97A42C4C1B8F54EB0003700B /* Info.plist */,
 			);
