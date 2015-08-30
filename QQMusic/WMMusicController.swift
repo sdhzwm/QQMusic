@@ -215,7 +215,21 @@ extension WMMusicController: AVAudioPlayerDelegate,UIScrollViewDelegate{
         // 设置存放歌词和头像的view的透明度
         iconView.alpha = ratio
     }
-    
+    //监听远程事件
+    override func remoteControlReceivedWithEvent(event: UIEvent?) {
+        switch(event!.subtype) {
+        case .RemoteControlPlay:
+            playSong()
+        case .RemoteControlPause:
+            playSong()
+        case .RemoteControlNextTrack:
+            nextSong()
+        case .RemoteControlPreviousTrack:
+            preSong()
+        default:
+            break
+        }
+    }
 }
 // MARK: 动画及基本设置
 extension WMMusicController {

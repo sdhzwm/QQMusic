@@ -60,7 +60,7 @@ class WMLrcView: UIScrollView {
                         _tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
                         lrcLabel.text = currentLine.lrcText
                         //生成锁屏的图片
-                      //   [self generatorLockImage];
+                        setupBackPlayImage()
                     }
                     
                     //根据进度,显示label画多少
@@ -90,6 +90,36 @@ class WMLrcView: UIScrollView {
     }
     override func awakeFromNib() {
         settingTableView()
+    }
+}
+//MARK: 抽离didSet中得方法
+extension WMLrcView {
+    ///设置背景图片
+    private func setupBackPlayImage() {
+        //获取到当前播放歌曲的图片
+        let playingMusic = WMMusicTool.playerMusic()
+        let currentImage = UIImage(named: playingMusic.icon!)
+        //获取到当前歌词以及前一句和后一句歌词
+        let currLrc = lrcList[currIndex!] as! WMLrcLine
+        //上一句
+        let previousIndex = currIndex! - 1
+        var prevousLrc: WMLrcLine?
+        if previousIndex >= 0 {
+            prevousLrc = lrcList[previousIndex] as? WMLrcLine
+        }
+        
+        //下一句歌词
+        let nextIndex = currIndex! + 1
+        var nextLrc = WMLrcLine()
+        
+        if nextIndex < lrcList.count {
+            nextLrc = lrcList[nextIndex] as! WMLrcLine
+        }
+        //获取到返回的图片
+        let lockImage = currentImage?.setImageWithString(25.0, currText: currLrc.lrcText!, prevousText: prevousLrc?.lrcText, nextText: nextLrc.lrcText)
+        //设置锁屏以及后台播放的信息
+        WMBackPalyTool.setupLockScreenInfoWithLockImage(lockImage!, duration: duration!, currTime: currentTime!)
+
     }
 }
 //MARK: tableView的代理
