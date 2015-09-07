@@ -201,13 +201,13 @@ extension WMMusicController {
 //MARK: 播放器的代理以及ScrollView的代理
 extension WMMusicController: AVAudioPlayerDelegate,UIScrollViewDelegate{
     //自动播放下一曲
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
+   @objc internal func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         if flag {
             nextSong()
         }
     }
     //随着ScrollView的偏移，头像view隐藏
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+   @objc internal func scrollViewDidScroll(scrollView: UIScrollView) {
         //获取到滑动的偏移
         let point = scrollView.contentOffset;
         //计算偏移的比例
@@ -251,7 +251,7 @@ extension WMMusicController {
         return .LightContent
     }
     //MARK:设置动画
-    func startIconViewAnimate() {
+    private func startIconViewAnimate() {
         let rotateAnim = CABasicAnimation(keyPath: "transform.rotation.z")
         rotateAnim.fromValue = 0
         rotateAnim.toValue = 2 * M_PI

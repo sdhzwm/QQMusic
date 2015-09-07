@@ -9,13 +9,13 @@
 import UIKit
 
 
-extension NSString {
+ extension NSString {
     class func stringWithTime(time: NSTimeInterval) ->String {
         let min = time / 60
         let seconde = time % 60
         
         return String(format: "%02.f:%02.f",min,seconde)
-    }
+ }
     
    class func timeStringWithString(timeString: NSString) ->NSTimeInterval {
     

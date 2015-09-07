@@ -125,11 +125,11 @@ extension WMLrcView {
 //MARK: tableView的代理
 extension WMLrcView: UITableViewDataSource {
     //cell的数量
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+   @objc internal func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return lrcList.count
     }
     //设置cell的内容的展示
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+   @objc internal func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = WMLrcCell.lrcCellWithTableView(tableView)
         //如果是当前行的话，字体变大
@@ -147,7 +147,7 @@ extension WMLrcView: UITableViewDataSource {
 //MARK: 一些初始化设置
 extension WMLrcView {
     
-    func settingTableView(){
+   private func settingTableView(){
         let tableView = UITableView()
         tableView.backgroundColor = UIColor.clearColor()
         tableView.separatorStyle = .None
@@ -161,7 +161,7 @@ extension WMLrcView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        //
+
         let lrcViewVVFL = "V:|-0-[lrcView(==hScrollView)]-0-|";
         
         let lrcViewVCons = NSLayoutConstraint.constraintsWithVisualFormat(lrcViewVVFL, options: .DirectionLeadingToTrailing, metrics: nil, views: ["lrcView" : _tableView,"hScrollView" : self])
