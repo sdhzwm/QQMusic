@@ -56,7 +56,7 @@ extension WMMusicController {
     /**添加定时器*/
     private func addSliedTimer() {
         updateMuneInfo()
-        progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "updateMuneInfo", userInfo: nil, repeats: true)
+        progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(WMMusicController.updateMuneInfo), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(progressTimer!, forMode: NSRunLoopCommonModes)
     }
     /**移除滑块的定时器*/
@@ -99,7 +99,7 @@ extension WMMusicController {
     //MARK:歌词的定时器设置
     //添加歌词的定时器
     private func addLrcTimer() {
-        lrcTimer = CADisplayLink(target: self, selector: "updateLrcTimer")
+        lrcTimer = CADisplayLink(target: self, selector: #selector(WMMusicController.updateLrcTimer))
        lrcTimer?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
     }
     //删除歌词的定时器
@@ -261,7 +261,7 @@ extension WMMusicController {
         iconImageView.layer.addAnimation(rotateAnim, forKey: nil)
         
         let tapSlider = UITapGestureRecognizer()
-        tapSlider.addTarget(self, action: "sliderClick:")
+        tapSlider.addTarget(self, action: #selector(WMMusicController.sliderClick(_:)))
         sliderTime.addGestureRecognizer(tapSlider)
     }
 }
