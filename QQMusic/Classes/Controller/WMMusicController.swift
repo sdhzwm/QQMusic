@@ -36,7 +36,7 @@ class WMMusicController: UIViewController {
     /// 当前播放歌曲
     private var currentSong = AVAudioPlayer()
     /// slider的定时器
-    private var progressTimer:NSTimer?
+    private var progressTimer:Timer?
     /// 歌词的定时器
     private var lrcTimer:CADisplayLink?
     /// scrollView ->歌词的展示view
@@ -56,8 +56,8 @@ extension WMMusicController {
     /**添加定时器*/
     private func addSliedTimer() {
         updateMuneInfo()
-        progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(WMMusicController.updateMuneInfo), userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(progressTimer!, forMode: NSRunLoopCommonModes)
+        progressTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(WMMusicController.updateMuneInfo), userInfo: nil, repeats: true)
+        RunLoop.main.add(progressTimer!, forMode: .commonModes)
     }
     /**移除滑块的定时器*/
     private func removeSliderTimer() {
@@ -66,7 +66,7 @@ extension WMMusicController {
     }
     /**更新页面的信息*/
     @objc private func updateMuneInfo() {
-        minTime.text = NSString.stringWithTime(currentSong.currentTime)
+        minTime.text = currentSong.currentTime.lrcTimeString
         sliderTime.value = Float(currentSong.currentTime / currentSong.duration)
     }
     //MARK:设置滑块的状态
@@ -75,7 +75,7 @@ extension WMMusicController {
     }
     @IBAction func sliderValueChange() {
         // 设置当前播放的时间Label
-        minTime.text = NSString.stringWithTime(currentSong.duration * Double(sliderTime.value))
+        minTime.text = (currentSong.duration * Double(sliderTime.value)).lrcTimeString
     }
     
     @IBAction func endSlide() {
@@ -87,7 +87,7 @@ extension WMMusicController {
     //MARK:滑块的点击事件
     @objc private func sliderClick(tap:UITapGestureRecognizer) {
         //获取点击的位置
-        let point = tap.locationInView(sliderTime)
+        let point = tap.location(in: sliderTime)
     
         //获取点击的在slider长度中占据的比例
         let ratio = point.x / sliderTime.bounds.size.width;    
@@ -100,7 +100,7 @@ extension WMMusicController {
     //添加歌词的定时器
     private func addLrcTimer() {
         lrcTimer = CADisplayLink(target: self, selector: #selector(WMMusicController.updateLrcTimer))
-       lrcTimer?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
+        lrcTimer?.add(to: .main, forMode: .commonModes)
     }
     //删除歌词的定时器
     private func removeLrcTimer() {
@@ -118,14 +118,14 @@ extension WMMusicController {
     //MARK: 上一首歌曲
     @IBAction func preSong() {
         
-        let previousMusic = WMMusicTool.previousMusic()
+        let previousMusic = WMMusicTool.shared.previousMusic()
         //播放
-        playingMusicWithMusic(previousMusic)
+        playingMusicWithMusic(music: previousMusic)
     }
     //MARK: 播放歌曲
     @IBAction func playSong() {
-        playerBtn.selected = !playerBtn.selected
-        if currentSong.playing {
+        playerBtn.isSelected = !playerBtn.isSelected
+        if currentSong.isPlaying {
             currentSong.pause()
             //删除滑块的定时器
             removeSliderTimer()
@@ -145,29 +145,29 @@ extension WMMusicController {
     }
     //MARK: 下一首歌曲
     @IBAction func nextSong() {
-        let nextSong = WMMusicTool.nextMusic()
+        let nextSong = WMMusicTool.shared.nextMusic()
         //播放
-        playingMusicWithMusic(nextSong)
+        playingMusicWithMusic(music: nextSong)
     }
     //播放歌曲，根据传来的歌曲名字
-   private func playingMusicWithMusic(music: WMMusic) {
-       
+    private func playingMusicWithMusic(music: WMMusic) {
+        
         //停掉之前的
-        let playerMusic = WMMusicTool.playerMusic()
-        WMAudioTool.stopMusicWithMusicName(playerMusic.filename!)
+        let playerMusic = WMMusicTool.shared.playerMusic()
+        WMAudioTool.stopMusic(with: playerMusic.filename!)
         lrcLabel.text = ""
         lrcView.currentTime = 0
         //播放现在的
-        WMAudioTool.playMusicWithMusicName(music.filename!)
-        WMMusicTool.setPlayingMusic(music)
+        WMAudioTool.playMusic(with: music.filename!)
+        WMMusicTool.shared.setPlayingMusic(playingMusic: music)
         setingPlaySong()
-
+        
     }
     //MARK: 设置播放的加载项
     private func setingPlaySong() {
         
         //取出当前的播放歌曲
-        let currentMusic = WMMusicTool.playerMusic()
+        let currentMusic = WMMusicTool.shared.playerMusic()
         
         //设置当前的界面信息
         backGroudView.image = UIImage(named: currentMusic.icon!)
@@ -176,14 +176,14 @@ extension WMMusicController {
         singer.text = currentMusic.singer
         
         //设置歌曲播放
-        let currentAudio = WMAudioTool.playMusicWithMusicName(currentMusic.filename!)
+        let currentAudio = WMAudioTool.playMusic(with: currentMusic.filename!)
         currentAudio.delegate = self
         //设置时间
-        minTime.text = NSString.stringWithTime(currentAudio.currentTime)
-        maxTime.text = NSString.stringWithTime(currentAudio.duration)
+        minTime.text = currentAudio.currentTime.lrcTimeString
+        maxTime.text = currentAudio.duration.lrcTimeString
         currentSong = currentAudio
         //播放按钮状态的改变
-        playerBtn.selected = currentSong.playing
+        playerBtn.isSelected = currentSong.isPlaying
         sliderTime.value = 0
         //设置歌词内容
         lrcView.lrcName = currentMusic.lrcname;
@@ -201,13 +201,13 @@ extension WMMusicController {
 //MARK: 播放器的代理以及ScrollView的代理
 extension WMMusicController: AVAudioPlayerDelegate,UIScrollViewDelegate{
     //自动播放下一曲
-   @objc internal func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
+    @objc internal func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {
             nextSong()
         }
     }
     //随着ScrollView的偏移，头像view隐藏
-   @objc internal func scrollViewDidScroll(scrollView: UIScrollView) {
+    @objc internal func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //获取到滑动的偏移
         let point = scrollView.contentOffset;
         //计算偏移的比例
@@ -216,15 +216,15 @@ extension WMMusicController: AVAudioPlayerDelegate,UIScrollViewDelegate{
         iconView.alpha = ratio
     }
     //监听远程事件
-    override func remoteControlReceivedWithEvent(event: UIEvent?) {
+    override func remoteControlReceived(with event: UIEvent?) {
         switch(event!.subtype) {
-        case .RemoteControlPlay:
+        case .remoteControlPlay:
             playSong()
-        case .RemoteControlPause:
+        case .remoteControlPause:
             playSong()
-        case .RemoteControlNextTrack:
+        case .remoteControlNextTrack:
             nextSong()
-        case .RemoteControlPreviousTrack:
+        case .remoteControlPreviousTrack:
             preSong()
         default:
             break
@@ -241,27 +241,29 @@ extension WMMusicController {
         iconImageView.layer.cornerRadius = iconImageView.bounds.width * 0.5
         iconImageView.layer.masksToBounds = true
         iconImageView.layer.borderWidth = 8
-        iconImageView.layer.borderColor = UIColor(red: 36/255.0, green: 36/255.0, blue: 36/255.0, alpha: 1.0).CGColor
+        iconImageView.layer.borderColor = UIColor(red: 36/255.0, green: 36/255.0, blue: 36/255.0, alpha: 1.0).cgColor
         
-        sliderTime.setThumbImage(UIImage(named: "player_slider_playback_thumb"), forState: .Normal)
-        lrcView.contentSize = CGSizeMake(view.bounds.width * 2, 0)
+        sliderTime.setThumbImage(UIImage(named: "player_slider_playback_thumb"), for: .normal)
+        lrcView.contentSize = CGSize(width: view.bounds.width * 2, height: 0)
+        
     }
     //MARK: 设置状态栏的透明
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
+
     //MARK:设置动画
     private func startIconViewAnimate() {
         let rotateAnim = CABasicAnimation(keyPath: "transform.rotation.z")
         rotateAnim.fromValue = 0
-        rotateAnim.toValue = 2 * M_PI
+        rotateAnim.toValue = Double.pi * 2
         rotateAnim.repeatCount = Float(NSIntegerMax)
         rotateAnim.duration = 15
         
-        iconImageView.layer.addAnimation(rotateAnim, forKey: nil)
+        iconImageView.layer.add(rotateAnim, forKey: nil)
         
         let tapSlider = UITapGestureRecognizer()
-        tapSlider.addTarget(self, action: #selector(WMMusicController.sliderClick(_:)))
+        tapSlider.addTarget(self, action: #selector(WMMusicController.sliderClick(tap:)))
         sliderTime.addGestureRecognizer(tapSlider)
     }
 }

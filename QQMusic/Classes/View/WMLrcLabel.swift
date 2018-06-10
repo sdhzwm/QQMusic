@@ -9,25 +9,17 @@
 import UIKit
 
 class WMLrcLabel: UILabel {
-    var progress:CGFloat? = 0 {
+    var progress: CGFloat = 0 {
         didSet {
-            if let progres = progress {
-                
-                progress = progres
-
                 setNeedsDisplay()
-            }
         }
     }
-
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
-        
-        let fillRect = CGRectMake(0, 0, bounds.size.width * progress!, bounds.size.height)
-        
-        UIColor(red: 38/255.0, green: 187/255.0, blue: 102/255.0, alpha: 1.0).set()
-       
-        UIRectFillUsingBlendMode(fillRect, .SourceIn)
+    
+    override func draw(_ rect: CGRect) {
+        super.drawText(in: rect)
+        let fillRect = CGRect(x: 0, y: 0, width: bounds.width * (progress), height: bounds.height)
+        UIColor(red: 38/255.0, green: 187/255, blue: 102/255.0, alpha: 1).set()
+        UIRectFillUsingBlendMode(fillRect, .sourceIn)
     }
     
     

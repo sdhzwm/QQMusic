@@ -10,20 +10,21 @@ import UIKit
 
 class WMLrcCell: UITableViewCell {
     
-    var _lrcLabel:WMLrcLabel?
+    static let reuseId = "LrcCell"
+    
+    var lrcLabel:WMLrcLabel!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        let lrcLabel = WMLrcLabel()
-        lrcLabel.textColor = UIColor.whiteColor()
-        lrcLabel.font = UIFont.systemFontOfSize(14)
-        lrcLabel.textAlignment = .Center
+        lrcLabel = WMLrcLabel()
+        lrcLabel.textColor = UIColor.white
+        lrcLabel.font = UIFont.systemFont(ofSize: 14)
+        lrcLabel.textAlignment = .center
         contentView.addSubview(lrcLabel)
-        _lrcLabel = lrcLabel
         lrcLabel.translatesAutoresizingMaskIntoConstraints = false
         
-         let labelHCon = NSLayoutConstraint(item: lrcLabel, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0)
-         let labelVCon = NSLayoutConstraint(item: lrcLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: 0)
+         let labelHCon = NSLayoutConstraint(item: lrcLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0)
+         let labelVCon = NSLayoutConstraint(item: lrcLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         addConstraint(labelHCon)
         addConstraint(labelVCon)
     }
@@ -32,15 +33,14 @@ class WMLrcCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    class func lrcCellWithTableView(tableView:UITableView) ->WMLrcCell{
-        let ID = "LrcCell"
-        var cell = tableView.dequeueReusableCellWithIdentifier(ID) as? WMLrcCell
+    class func lrcCell(with tableView:UITableView) ->WMLrcCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: reuseId) as? WMLrcCell
         if (cell == nil) {
-            cell = WMLrcCell(style: .Default, reuseIdentifier: ID)
-            cell!.backgroundColor = UIColor.clearColor()
-            cell!.selectionStyle = .None
+            cell = WMLrcCell(style: .default, reuseIdentifier: reuseId)
+            cell!.backgroundColor = UIColor.clear
+            cell!.selectionStyle = .none
         
         }
-        return cell!;
+        return cell!
     }
 }

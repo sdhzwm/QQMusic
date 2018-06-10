@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 import MediaPlayer
-class WMBackPalyTool: NSObject {
+class WMBackPalyTool {
 
     /// 设置后台播放
     class func setupBackPlay() {
@@ -21,11 +21,11 @@ class WMBackPalyTool: NSObject {
         try! session.setActive(true)
     }
     /// 设置后台播放的一些列设置
-    class func setupLockScreenInfoWithLockImage(lockImage:UIImage,duration:NSTimeInterval, currTime: NSTimeInterval) {
+    class func setupLockScreenInfo(with lockImage:UIImage,duration:TimeInterval, currTime: TimeInterval) {
         //获取当前播放的歌曲
-        let playingMusic = WMMusicTool.playerMusic()
+        let playingMusic = WMMusicTool.shared.playerMusic()
         //获取锁屏界面中心
-        let playingInfoCenter = MPNowPlayingInfoCenter.defaultCenter()
+        let playingInfoCenter = MPNowPlayingInfoCenter.default()
         //设置需要展示的信息
         let artWord = MPMediaItemArtwork(image: lockImage)
         
@@ -35,10 +35,10 @@ class WMBackPalyTool: NSObject {
             MPMediaItemPropertyArtwork: artWord,
             MPMediaItemPropertyPlaybackDuration: duration,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: currTime
-        ]
+            ] as [String : Any]
         playingInfoCenter.nowPlayingInfo = playingInfo
         //接受远程事件
-        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+        UIApplication.shared.beginReceivingRemoteControlEvents()
 
     }
 }
