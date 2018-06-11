@@ -33,7 +33,7 @@ class WMLrcCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    class func lrcCell(with tableView:UITableView) ->WMLrcCell {
+    class func lrcCell(with tableView: UITableView) -> WMLrcCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: reuseId) as? WMLrcCell
         if (cell == nil) {
             cell = WMLrcCell(style: .default, reuseIdentifier: reuseId)

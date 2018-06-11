@@ -90,9 +90,9 @@ extension WMMusicController {
         let point = tap.location(in: sliderTime)
     
         //获取点击的在slider长度中占据的比例
-        let ratio = point.x / sliderTime.bounds.size.width;    
+        let ratio = point.x / sliderTime.bounds.size.width
         //改变歌曲播放的时间
-        currentSong.currentTime = Double(ratio) * currentSong.duration;
+        currentSong.currentTime = Double(ratio) * currentSong.duration
         //更新进度信息
         updateMuneInfo()
     }
@@ -109,7 +109,7 @@ extension WMMusicController {
     }
     //更新歌词的时间
     @objc private func updateLrcTimer() {
-        lrcView.currentTime = currentSong.currentTime;
+        lrcView.currentTime = currentSong.currentTime
     }
     
 }
@@ -186,8 +186,8 @@ extension WMMusicController {
         playerBtn.isSelected = currentSong.isPlaying
         sliderTime.value = 0
         //设置歌词内容
-        lrcView.lrcName = currentMusic.lrcname;
-        lrcView.duration = currentSong.duration;
+        lrcView.lrcName = currentMusic.lrcname
+        lrcView.duration = currentSong.duration
         lrcLabel.text = ""
         //移除以前的定时器
         removeSliderTimer()
@@ -209,9 +209,9 @@ extension WMMusicController: AVAudioPlayerDelegate,UIScrollViewDelegate{
     //随着ScrollView的偏移，头像view隐藏
     @objc internal func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //获取到滑动的偏移
-        let point = scrollView.contentOffset;
+        let point = scrollView.contentOffset
         //计算偏移的比例
-        let ratio = 1 - point.x / scrollView.bounds.size.width;
+        let ratio = 1 - point.x / scrollView.bounds.size.width
         // 设置存放歌词和头像的view的透明度
         iconView.alpha = ratio
     }

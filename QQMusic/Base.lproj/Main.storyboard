@@ -114,7 +114,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wfR-kh-rlI" customClass="WMLrcView" customModule="QQMusic" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="127" width="375" height="350"/>
                                 <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="8KQ-JL-EZd"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="lKH-Xe-15U"/>
                                 </connections>
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:001" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELu-Nw-kC4">
@@ -127,7 +127,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nN4-b3-MO3">
-                                <rect key="frame" x="70" y="510" width="234.5" height="31"/>
+                                <rect key="frame" x="70" y="510" width="232" height="31"/>
                                 <color key="minimumTrackTintColor" red="0.32941176470588235" green="0.78431372549019607" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="endSlide" destination="BYZ-38-t0r" eventType="touchUpInside" id="QWu-4o-hrp"/>
@@ -136,10 +136,7 @@
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:002" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJX-tv-Rm9">
-                                <rect key="frame" x="313" y="517" width="42" height="16"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="42" id="7Gg-BC-BUm"/>
-                                </constraints>
+                                <rect key="frame" x="310.5" y="517" width="44.5" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -236,7 +233,7 @@
                         <outlet property="iconImageView" destination="peA-QK-5Sc" id="gih-bu-tOz"/>
                         <outlet property="iconView" destination="Ul1-wA-p6q" id="Wlu-bL-IKl"/>
                         <outlet property="lrcLabel" destination="e7Y-Zd-Ykt" id="uT5-BZ-bqQ"/>
-                        <outlet property="lrcView" destination="wfR-kh-rlI" id="J4O-8Y-mpd"/>
+                        <outlet property="lrcView" destination="wfR-kh-rlI" id="JAh-Lm-61B"/>
                         <outlet property="maxTime" destination="eJX-tv-Rm9" id="MSc-Va-KoV"/>
                         <outlet property="minTime" destination="ELu-Nw-kC4" id="XSf-qh-brp"/>
                         <outlet property="playerBtn" destination="KLk-vK-q28" id="A5I-Nj-HfJ"/>
@@ -247,7 +244,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="189.5" y="230.5"/>
+            <point key="canvasLocation" x="177" y="182"/>
         </scene>
     </scenes>
     <resources>

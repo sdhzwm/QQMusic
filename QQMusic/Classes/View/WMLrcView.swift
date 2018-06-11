@@ -86,6 +86,11 @@ class WMLrcView: UIScrollView {
         settingTableView()
     }
     
+    override func awakeFromNib() {
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorStyle = .none
+    }
+    
 }
 //MARK: 抽离didSet中得方法
 extension WMLrcView {
@@ -144,8 +149,6 @@ extension WMLrcView {
     
     private func settingTableView() {
         tableView = UITableView()
-        tableView.backgroundColor = UIColor.clear
-        tableView.separatorStyle = .none
         tableView.rowHeight = 35
         addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
