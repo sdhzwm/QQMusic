@@ -8,8 +8,8 @@
 
 import UIKit
 
-class WMMusic:NSObject{
-    
+struct WMMusic {
+
     var name:String?
     var filename:String?
     var lrcname:String?

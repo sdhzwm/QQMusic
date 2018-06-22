@@ -8,26 +8,19 @@
 
 import UIKit
 
-class WMLrcLine: NSObject {
-     /// 歌词的文字
-        var lrcText: String?
-     /// 该行歌词的时间
-        var lrcTime: NSTimeInterval?
-    
-    private func initWithLrclineString(lrcText: String) ->WMLrcLine {
+struct WMLrcLine {
+    /// 歌词的文字
+    var text: String
+    /// 该行歌词的时间
+    var time: TimeInterval
+}
 
-        let lrcLine = WMLrcLine()
-        let lrcArr = lrcText.componentsSeparatedByString("]")
-        let timeString:NSString = lrcArr[0]
-        lrcLine.lrcTime = NSString.timeStringWithString(timeString.substringFromIndex(1))
-        lrcLine.lrcText = lrcArr[1]
-        
-        return lrcLine
-    }
+extension WMLrcLine {
     
-   class func lrcLineWithLrclineString(lrcText: String) ->WMLrcLine{
-        let lrcLine = WMLrcLine()
-        return lrcLine.initWithLrclineString(lrcText)
+    init(text: String) {
+        let lrcArr = text.components(separatedBy: "]")
+        time = String(lrcArr[0].dropFirst()).lrcTime
+        self.text = lrcArr[1]
     }
-    
+
 }
